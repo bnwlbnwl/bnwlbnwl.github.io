@@ -79,13 +79,15 @@
 
 
 
+<meta name="description" content="前言​        在网上🏄‍时候遇到一道java题: 1234567public class Test &amp;#123;  public static void main(String[] args) &amp;#123;  int i &#x3D; 10;     i &#x3D; i++;   System.out.println(i);  &amp;#125; &amp;#125; ​        最终输出的i值为10。这短短两行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="page">
-<meta property="og:url" content="http://example.com/2021/01/16/page/index.html">
+<meta property="og:title" content="由i&#x3D;i++理解java内存机制">
+<meta property="og:url" content="http://example.com/2021/01/16/%E7%94%B1i-i-%E7%90%86%E8%A7%A3java%E5%86%85%E5%AD%98%E6%9C%BA%E5%88%B6/index.html">
 <meta property="og:site_name" content="听心小筑">
+<meta property="og:description" content="前言​        在网上🏄‍时候遇到一道java题: 1234567public class Test &amp;#123;  public static void main(String[] args) &amp;#123;  int i &#x3D; 10;     i &#x3D; i++;   System.out.println(i);  &amp;#125; &amp;#125; ​        最终输出的i值为10。这短短两行">
 <meta property="og:locale">
-<meta property="article:published_time" content="2021-01-15T16:01:52.000Z">
-<meta property="article:modified_time" content="2021-01-15T16:01:52.703Z">
+<meta property="article:published_time" content="2021-01-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-01-15T17:01:35.205Z">
 <meta property="article:author" content="因缘">
 <meta name="twitter:card" content="summary">
 
@@ -117,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2021/01/16/page/"/>
+  <link rel="canonical" href="http://example.com/2021/01/16/由i-i-理解java内存机制/"/>
 
 
 
 
 
-  <title>page | 听心小筑</title>
+  <title>由i=i++理解java内存机制 | 听心小筑</title>
   
 
 
@@ -250,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/16/page/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/16/%E7%94%B1i-i-%E7%90%86%E8%A7%A3java%E5%86%85%E5%AD%98%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -267,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">page</h1>
+          <h1 class="post-title" itemprop="name headline">由i=i++理解java内存机制</h1>
         
 
         <div class="post-meta">
@@ -279,7 +281,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-16T00:01:52+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-16T00:00:00+08:00">
                 2021-01-16
               </time>
             
@@ -317,7 +319,10 @@
       
 
       
-        
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>​        在网上🏄‍时候遇到一道java题:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123; </span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">10</span>;   </span><br><span class="line">  i = i++; </span><br><span class="line">  System.out.println(i); </span><br><span class="line"> &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​        最终输出的i值为10。这短短两行运算却让我挠破头皮也无法想出一个合理的解释，在苦思无果后终求助于搜索引擎。看了各方说法后明白原来👆题目涉及到了java中栈的运行原理，这完全是我的知识盲区，虽然此前上课听老师讲过但至今早就遗忘干净，干脆趁此机会对java内存管理机制做个复习梳理。</p>
+
       
     </div>
     
@@ -401,8 +406,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -444,6 +458,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
